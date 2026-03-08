@@ -1,0 +1,1155 @@
+<!-- ======================================== -->
+<!-- VERSI ADMIN DENGAN SIMPAN KE GITHUB (FIXED) -->
+<!-- ======================================== -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Pertamina Kalkulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #111118;
+            border-radius: 48px;
+            padding: 30px;
+            box-shadow: 0 30px 60px -15px #000000c0;
+            border-bottom: 4px solid #7c3aed;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #5b21b6, #7c3aed, #a78bfa);
+            border-radius: 48px 48px 0 0;
+        }
+
+        .admin-badge {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #e21313;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(226, 19, 19, 0.3);
+            border: 1px solid rgba(255,255,255,0.3);
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-right: 120px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .pertamina-logo-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5b21b6, #7c3aed, #a78bfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+            overflow: hidden;
+        }
+
+        .pertamina-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pertamina-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-label {
+            color: #a8a8cc;
+            font-size: 0.9rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1a1a24;
+            transition: .3s;
+            border-radius: 30px;
+            border: 1px solid #7c3aed;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "🌙";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 2px;
+            background: #7c3aed;
+            transition: .3s;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+        }
+
+        input:checked + .slider:before {
+            content: "☀️";
+            transform: translateX(30px);
+            background: #a78bfa;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a8a8cc;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #2d2d3a;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .admin-panel {
+            background: #1a1a24;
+            border: 2px solid #7c3aed;
+            border-radius: 40px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .admin-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #a78bfa;
+            font-weight: 600;
+            border-bottom: 1px dashed #7c3aed;
+            padding-bottom: 15px;
+        }
+
+        .admin-panel-header .emoji {
+            font-size: 1.8rem;
+        }
+
+        .admin-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .admin-input-group {
+            flex: 2;
+            min-width: 250px;
+        }
+
+        .admin-input-group label {
+            display: block;
+            color: #a8a8cc;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: #12121a;
+            border: 1px solid #7c3aed;
+            border-radius: 40px;
+            font-size: 1rem;
+            color: white;
+            outline: none;
+        }
+
+        .admin-input-group input:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+        }
+
+        .admin-btn {
+            background: #7c3aed;
+            border: none;
+            border-radius: 40px;
+            padding: 14px 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #4a2a8a;
+            transition: 0.1s linear;
+            flex: 1;
+            min-width: 160px;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .admin-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #4a2a8a;
+        }
+
+        .admin-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: translateY(0);
+            box-shadow: 0 5px 0 #4a2a8a;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .success {
+            background: rgba(0, 255, 0, 0.1);
+            color: #a0ffa0;
+            border: 1px solid #00ff00;
+        }
+
+        .error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ffa0a0;
+            border: 1px solid #ff6b6b;
+        }
+
+        .info-box {
+            background: #1a1a24;
+            border: 1px solid #3a3a4a;
+            border-radius: 30px;
+            padding: 20px 25px;
+            margin: 25px 0;
+            color: #a8a8cc;
+        }
+
+        .info-box h3 {
+            color: #a78bfa;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #6b6b8b;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: white;
+            background: #12121a;
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            border: 1px solid #3a3a4a;
+        }
+
+        .info-value.success {
+            background: rgba(0, 255, 0, 0.1);
+            color: #a0ffa0;
+            border-color: #00ff00;
+        }
+
+        .info-value.error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ffa0a0;
+            border-color: #ff6b6b;
+        }
+
+        .connection-status {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 30px;
+            background: #12121a;
+            border: 1px solid #3a3a4a;
+        }
+
+        .info-desimal {
+            background: #1a1a24;
+            border: 1px solid #3a3a4a;
+            border-radius: 40px;
+            padding: 20px 25px;
+            margin: 25px 0;
+            color: #a8a8cc;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-desimal .icon {
+            font-size: 2.2rem;
+            color: #7c3aed;
+        }
+
+        .info-desimal strong {
+            color: #a78bfa;
+        }
+
+        .section {
+            background: #1a1a24;
+            border: 1px solid #3a3a4a;
+            border-radius: 36px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #3a3a4a;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section-header .emoji {
+            font-size: 2rem;
+            color: #7c3aed;
+        }
+
+        .section-header .title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            flex: 1 1 200px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #a8a8cc;
+            font-size: 0.7rem;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: #12121a;
+            border: 1px solid #3a3a4a;
+            border-radius: 40px;
+            font-size: 1rem;
+            color: white;
+            outline: none;
+            text-align: right;
+        }
+
+        .input-group input:focus {
+            border-color: #7c3aed;
+        }
+
+        .input-group input[readonly] {
+            background: #1a1a24;
+            border-color: #7c3aed;
+            color: #a78bfa;
+        }
+
+        .operator {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #a78bfa;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .btn-hitung {
+            background: #1e1e2a;
+            border: 1px solid #4c4c6a;
+            border-radius: 60px;
+            padding: 14px 20px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 0 #0c0c14;
+            transition: 0.1s linear;
+        }
+
+        .btn-hitung.small {
+            padding: 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-hitung:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #0c0c14;
+        }
+
+        .result-card {
+            background: #161620;
+            border: 1px solid #4c4c6a;
+            border-radius: 28px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .result-label {
+            color: #6b6b8b;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .result-value-wrapper {
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .result-value {
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .result-unit {
+            font-size: 1.4rem;
+            color: #a78bfa;
+        }
+
+        .result-detail {
+            color: #6b6b8b;
+            border-top: 1px solid #3a3a4a;
+            margin-top: 10px;
+            padding-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .link-arrow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 10px 0 20px;
+            color: #a78bfa;
+        }
+
+        .link-arrow .arrow {
+            font-size: 2rem;
+        }
+
+        .total-section {
+            background: #161620;
+            border: 1px solid #7c3aed;
+            border-radius: 48px;
+            padding: 25px;
+            margin: 30px 0 20px;
+        }
+
+        .total-header {
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid #3a3a4a;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .total-header .emoji {
+            font-size: 2rem;
+            color: #7c3aed;
+        }
+
+        .total-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .total-row {
+            background: #1e1e2a;
+            border-radius: 60px;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #3a3a4a;
+        }
+
+        .total-label {
+            color: #a8a8cc;
+        }
+
+        .total-value-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .total-value {
+            background: #2a2a36;
+            padding: 8px 25px;
+            border-radius: 40px;
+            color: white;
+            border: 1px solid #3a3a4a;
+        }
+
+        .total-unit {
+            color: #a78bfa;
+        }
+
+        .total-kali {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            font-size: 2rem;
+            color: #a78bfa;
+        }
+
+        .harga-unit {
+            font-size: 1.2rem;
+            color: #6b6b8b;
+            margin-left: 5px;
+        }
+
+        .total-result {
+            background: #1a1a24;
+            border-radius: 60px;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #7c3aed;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .total-result .label {
+            color: #a8a8cc;
+            font-size: 1.2rem;
+        }
+
+        .total-result .value {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .btn-reset {
+            background: #1a1a24;
+            border: 1px solid #3a3a4a;
+            border-radius: 60px;
+            padding: 15px;
+            color: #a8a8cc;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 0 #0a0a12;
+            transition: 0.1s linear;
+        }
+
+        .btn-reset:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #0a0a12;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b6b8b;
+            padding-top: 20px;
+            border-top: 1px solid #3a3a4a;
+        }
+
+        .footer a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            .header { flex-direction: column; align-items: flex-start; padding-right: 0; }
+            .admin-badge { position: static; display: inline-block; margin-bottom: 15px; }
+            .admin-row { flex-direction: column; }
+            .admin-btn { width: 100%; }
+            .result-value { font-size: 1.8rem; }
+            .result-unit { font-size: 1.2rem; }
+            .total-result .value { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- BADGE ADMIN -->
+        <div class="admin-badge">⚙️ ADMIN PANEL</div>
+        
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo-container">
+                <div class="pertamina-logo-circle">
+                    <img src="https://i.ibb.co.com/XfKBw6RH/pertamina-logo-circular-glossy-icon-with-transparent-background-free-png.png" alt="Pertamina Logo">
+                </div>
+                <span class="pertamina-text">PERTAMINA</span>
+            </div>
+            <div class="theme-toggle">
+                <span class="toggle-label">Mode</span>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="subtitle">HITAM • PUTIH • UNGU ELEGAN</div>
+
+        <!-- PANEL ADMIN -->
+        <div class="admin-panel">
+            <div class="admin-panel-header">
+                <span class="emoji">🔧</span>
+                <span>KONTROL HARGA GLOBAL</span>
+            </div>
+            
+            <div class="admin-row">
+                <div class="admin-input-group">
+                    <label>HARGA PER LITER (RP)</label>
+                    <input type="number" id="hargaInput" min="1" step="500" value="12500" placeholder="Contoh: 12500">
+                </div>
+                <button class="admin-btn" id="simpanHargaBtn">SIMPAN KE GITHUB</button>
+            </div>
+            
+            <div id="statusMessage" class="status-message" style="display: none;"></div>
+        </div>
+
+        <!-- INFO KONEKSI GITHUB -->
+        <div class="info-box">
+            <h3>📡 Status Koneksi GitHub</h3>
+            <div class="connection-status" id="connectionStatus">
+                <span>🔍 Memeriksa koneksi...</span>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">OWNER</div>
+                    <div class="info-value" id="displayOwner">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">REPOSITORY</div>
+                    <div class="info-value" id="displayRepo">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">ISSUE #</div>
+                    <div class="info-value" id="displayIssue">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFO DESIMAL -->
+        <div class="info-desimal">
+            <span class="icon">⛽</span>
+            <span>
+                <strong>FORMAT DESIMAL:</strong> Gunakan koma (,) untuk desimal. Titik ribuan diabaikan.<br>
+                Contoh: 152,2  atau  1.234.567,89
+            </span>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">1️⃣</span>
+                <span class="title">METERAN TERJUAL</span>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label>STAND AKHIR</label>
+                    <input type="text" id="kurang1_1" placeholder="cth: 1234567,89">
+                </div>
+                <span class="operator">−</span>
+                <div class="input-group">
+                    <label>STAND AWAL</label>
+                    <input type="text" id="kurang1_2" placeholder="cth: 276,1">
+                </div>
+            </div>
+            <button class="btn-hitung small" id="hitungKurang1">Hitung BBM Terjual</button>
+            <div class="result-card">
+                <div class="result-label">BBM TERJUAL</div>
+                <div class="result-value-wrapper">
+                    <span class="result-value" id="hasilKurang1">0</span>
+                    <span class="result-unit">L</span>
+                </div>
+                <div class="result-detail" id="detailKurang1">—</div>
+            </div>
+        </div>
+
+        <!-- LINK ARROW -->
+        <div class="link-arrow">
+            <span class="arrow">⤵️</span>
+            <span>DIPING ÷21</span>
+            <span class="arrow">⤵️</span>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">2️⃣</span>
+                <span class="title">HITUNG DIPING</span>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label>BBM TERJUAL</label>
+                    <input type="text" id="angkaBagi" readonly placeholder="otomatis">
+                </div>
+                <span class="operator">÷21</span>
+            </div>
+            <button class="btn-hitung small" id="hitungBagi">Hitung Diping</button>
+            <div class="result-card">
+                <div class="result-label">DIPING KELUAR</div>
+                <div class="result-value-wrapper">
+                    <span class="result-value" id="hasilBagi">0</span>
+                </div>
+                <div class="result-detail" id="detailBagi">—</div>
+            </div>
+        </div>
+
+        <!-- LINK ARROW -->
+        <div class="link-arrow">
+            <span class="arrow">⤵️</span>
+            <span>DIPING AKHIR</span>
+            <span class="arrow">⤵️</span>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">3️⃣</span>
+                <span class="title">DIPING AKHIR</span>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label>DIPING AWAL</label>
+                    <input type="text" id="angkaTetap" placeholder="cth: 2000000">
+                </div>
+                <span class="operator">−</span>
+                <div class="input-group">
+                    <label>PENGURANG</label>
+                    <input type="text" id="angkaPengurang" readonly placeholder="otomatis">
+                </div>
+            </div>
+            <button class="btn-hitung small" id="hitungKurang2">Hitung Diping Akhir</button>
+            <div class="result-card">
+                <div class="result-label">HASIL DIPING AKHIR</div>
+                <div class="result-value-wrapper">
+                    <span class="result-value" id="hasilKurang2">0</span>
+                </div>
+                <div class="result-detail" id="detailKurang2">—</div>
+            </div>
+        </div>
+
+        <!-- TOTAL SECTION -->
+        <div class="total-section">
+            <div class="total-header">
+                <span class="emoji">💰</span>
+                <span class="title">TOTAL PENJUALAN</span>
+            </div>
+            <div class="total-content">
+                <div class="total-row">
+                    <span class="total-label">BBM TERJUAL:</span>
+                    <div class="total-value-wrapper">
+                        <span class="total-value" id="totalAwal">0</span>
+                        <span class="total-unit">L</span>
+                    </div>
+                </div>
+                <div class="total-kali">
+                    <span>×</span>
+                    <span><span id="hargaDisplay">12.500</span><span class="harga-unit">/L</span></span>
+                </div>
+                <div class="total-result">
+                    <span class="label">TOTAL:</span>
+                    <span class="value" id="totalAkhir">Rp 0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESET BUTTON -->
+        <button class="btn-reset" id="resetBtn">⟲ KOSONGKAN SEMUA</button>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>© 2026 <a href="#">STAA DEV</a> • VERSI ADMIN</p>
+            <p style="margin-top: 10px;"><a href="index.html">← Kembali ke Kalkulator Pengguna</a></p>
+        </div>
+    </div>
+
+    <script>
+        // ========== FUNGSI FORMAT ANGKA ==========
+        function parseAngkaIndonesia(str) {
+            if (!str || str.trim() === '') return 0;
+            let cleaned = str.toString()
+                .replace(/\./g, '')
+                .replace(',', '.');
+            cleaned = cleaned.replace(/[^\d.-]/g, '');
+            let num = parseFloat(cleaned);
+            return isNaN(num) ? 0 : num;
+        }
+
+        function formatAngkaIndonesia(angka) {
+            if (angka === undefined || isNaN(angka)) return '0';
+            let num = typeof angka === 'string' ? parseFloat(angka) : angka;
+            let rounded = Math.round(num * 100) / 100;
+            let parts = rounded.toString().split('.');
+            let bilangan = parts[0];
+            let desimal = parts[1] || '00';
+            if (desimal.length === 1) desimal += '0';
+            bilangan = bilangan.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            return bilangan + ',' + desimal;
+        }
+
+        function formatRupiah(angka) {
+            if (isNaN(angka)) return 'Rp 0';
+            let rounded = Math.round(angka);
+            return 'Rp ' + rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        // ========== KONFIGURASI GITHUB ==========
+        // 🔴 GANTI DENGAN DATA ANDA!
+        const GITHUB_CONFIG = {
+            owner: 'staa-dev',           // Username GitHub Anda
+            repo: 'KALKULATOR-PERTASHOP', // Nama repository
+            token: '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'    // 🔴 GANTI DENGAN TOKEN ANDA
+        };
+        
+        const ISSUE_NUMBER = 1; // Nomor issue
+
+        // ========== ELEMEN DOM ==========
+        const hargaDisplay = document.getElementById('hargaDisplay');
+        const hargaInput = document.getElementById('hargaInput');
+        const simpanBtn = document.getElementById('simpanHargaBtn');
+        const statusDiv = document.getElementById('statusMessage');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const displayOwner = document.getElementById('displayOwner');
+        const displayRepo = document.getElementById('displayRepo');
+        const displayIssue = document.getElementById('displayIssue');
+        
+        // Tampilkan konfigurasi
+        displayOwner.textContent = GITHUB_CONFIG.owner;
+        displayRepo.textContent = GITHUB_CONFIG.repo;
+        displayIssue.textContent = ISSUE_NUMBER;
+        
+        // ========== FUNGSI STATUS ==========
+        function showStatus(message, isSuccess) {
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + (isSuccess ? 'success' : 'error');
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function updateConnectionStatus(isValid, message) {
+            if (isValid) {
+                connectionStatus.innerHTML = `<span style="color: #a0ffa0;">✅ ${message}</span>`;
+            } else {
+                connectionStatus.innerHTML = `<span style="color: #ffa0a0;">❌ ${message}</span>`;
+            }
+        }
+        
+        // ========== FUNGSI GITHUB ==========
+        async function testToken() {
+            try {
+                const response = await fetch('https://api.github.com/user', {
+                    headers: {
+                        'Authorization': `Bearer ${GITHUB_CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateConnectionStatus(true, `Token valid - Login sebagai ${data.login}`);
+                    return true;
+                } else {
+                    const error = await response.json();
+                    updateConnectionStatus(false, `Token error: ${error.message || 'Unknown error'}`);
+                    return false;
+                }
+            } catch (error) {
+                updateConnectionStatus(false, `Gagal konek: ${error.message}`);
+                return false;
+            }
+        }
+        
+        async function fetchHarga() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/issues/${ISSUE_NUMBER}`, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const body = data.body || '';
+                const match = body.match(/HARGA:(\d+)/);
+                
+                if (match && match[1]) {
+                    const harga = parseInt(match[1]);
+                    hargaInput.value = harga;
+                    hargaDisplay.textContent = formatAngkaIndonesia(harga).replace(',00', '');
+                    showStatus('✅ Harga terakhir: Rp ' + harga.toLocaleString('id-ID') + '/L', true);
+                }
+            } catch (error) {
+                console.log('Gagal mengambil harga:', error);
+                updateConnectionStatus(false, error.message);
+            }
+        }
+        
+        async function simpanHarga() {
+            const hargaBaru = parseInt(hargaInput.value);
+            
+            if (!hargaBaru || hargaBaru < 1) {
+                showStatus('❌ Masukkan harga yang valid!', false);
+                return;
+            }
+            
+            simpanBtn.disabled = true;
+            simpanBtn.textContent = 'MENYIMPAN...';
+            
+            try {
+                const tokenValid = await testToken();
+                if (!tokenValid) {
+                    throw new Error('Token tidak valid');
+                }
+                
+                const updateResponse = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/issues/${ISSUE_NUMBER}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${GITHUB_CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: 'HARGA BBM',
+                        body: `HARGA:${hargaBaru}\n\nTerakhir diupdate: ${new Date().toLocaleString('id-ID')}`
+                    })
+                });
+                
+                if (!updateResponse.ok) {
+                    const error = await updateResponse.json();
+                    throw new Error(error.message || `HTTP ${updateResponse.status}`);
+                }
+                
+                hargaDisplay.textContent = formatAngkaIndonesia(hargaBaru).replace(',00', '');
+                showStatus(`✅ Harga berhasil diupdate menjadi Rp ${hargaBaru.toLocaleString('id-ID')}/L`, true);
+                updateTotalRupiah();
+                
+            } catch (error) {
+                showStatus('❌ Gagal: ' + error.message, false);
+            } finally {
+                simpanBtn.disabled = false;
+                simpanBtn.textContent = 'SIMPAN KE GITHUB';
+            }
+        }
+        
+        // ========== CEK LOGIN ==========
+        if (sessionStorage.getItem('adminAuthenticated') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
+        // ========== INIT ==========
+        testToken();
+        fetchHarga();
+
+        // ========== ELEMEN KALKULATOR ==========
+        const kurang1_1 = document.getElementById('kurang1_1');
+        const kurang1_2 = document.getElementById('kurang1_2');
+        const hasilKurang1 = document.getElementById('hasilKurang1');
+        const detailKurang1 = document.getElementById('detailKurang1');
+        const hitungKurang1 = document.getElementById('hitungKurang1');
+        const angkaBagi = document.getElementById('angkaBagi');
+        const hasilBagi = document.getElementById('hasilBagi');
+        const detailBagi = document.getElementById('detailBagi');
+        const hitungBagi = document.getElementById('hitungBagi');
+        const angkaTetap = document.getElementById('angkaTetap');
+        const angkaPengurang = document.getElementById('angkaPengurang');
+        const hasilKurang2 = document.getElementById('hasilKurang2');
+        const detailKurang2 = document.getElementById('detailKurang2');
+        const hitungKurang2 = document.getElementById('hitungKurang2');
+        const totalAwal = document.getElementById('totalAwal');
+        const totalAkhir = document.getElementById('totalAkhir');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('change', function() {
+            document.body.classList.toggle('light-mode');
+        });
+
+        // ========== FUNGSI KALKULATOR ==========
+        function updateTotalRupiah() {
+            let nilaiAwal = parseAngkaIndonesia(hasilKurang1.textContent);
+            let total = nilaiAwal * parseInt(hargaInput.value);
+            totalAwal.textContent = hasilKurang1.textContent;
+            totalAkhir.textContent = formatRupiah(total);
+        }
+
+        function hitungPengurangan1(updateLanjutan = true) {
+            let a = parseAngkaIndonesia(kurang1_1.value);
+            let b = parseAngkaIndonesia(kurang1_2.value);
+            let hasil = a - b;
+            let aFmt = formatAngkaIndonesia(a);
+            let bFmt = formatAngkaIndonesia(b);
+            let hasilFmt = formatAngkaIndonesia(hasil);
+            hasilKurang1.textContent = hasilFmt;
+            detailKurang1.textContent = (a || b) ? `${aFmt} - ${bFmt} = ${hasilFmt} L` : '—';
+            angkaBagi.value = hasilFmt;
+            if (updateLanjutan) hitungPembagian(true);
+            updateTotalRupiah();
+        }
+
+        function hitungPembagian(updateLanjutan = true) {
+            let nilai = parseAngkaIndonesia(angkaBagi.value);
+            let hasilBagiN = nilai / 21;
+            let fmtNilai = formatAngkaIndonesia(nilai);
+            let fmtHasil = formatAngkaIndonesia(hasilBagiN);
+            hasilBagi.textContent = fmtHasil;
+            detailBagi.textContent = (nilai !== 0) ? `${fmtNilai} ÷ 21 = ${fmtHasil}` : '—';
+            angkaPengurang.value = fmtHasil;
+            if (updateLanjutan) hitungPengurangan2();
+        }
+
+        function hitungPengurangan2() {
+            let tetap = parseAngkaIndonesia(angkaTetap.value);
+            let pengurang = parseAngkaIndonesia(angkaPengurang.value);
+            let hasil = tetap - pengurang;
+            let tetapFmt = formatAngkaIndonesia(tetap);
+            let pengurangFmt = formatAngkaIndonesia(pengurang);
+            let hasilFmt = formatAngkaIndonesia(hasil);
+            hasilKurang2.textContent = hasilFmt;
+            detailKurang2.textContent = (tetap || pengurang) ? `${tetapFmt} - ${pengurangFmt} = ${hasilFmt}` : '—';
+        }
+
+        // ========== EVENT LISTENERS ==========
+        simpanBtn.addEventListener('click', simpanHarga);
+        hitungKurang1.addEventListener('click', () => hitungPengurangan1(true));
+        hitungBagi.addEventListener('click', () => hitungPembagian(true));
+        hitungKurang2.addEventListener('click', hitungPengurangan2);
+
+        kurang1_1.addEventListener('keypress', (e) => { if (e.key === 'Enter') hitungPengurangan1(true); });
+        kurang1_2.addEventListener('keypress', (e) => { if (e.key === 'Enter') hitungPengurangan1(true); });
+        angkaTetap.addEventListener('keypress', (e) => { if (e.key === 'Enter') hitungPengurangan2(); });
+
+        resetBtn.addEventListener('click', () => {
+            kurang1_1.value = '';
+            kurang1_2.value = '';
+            angkaTetap.value = '';
+            hasilKurang1.textContent = '0';
+            detailKurang1.textContent = '—';
+            angkaBagi.value = '';
+            hasilBagi.textContent = '0';
+            detailBagi.textContent = '—';
+            angkaPengurang.value = '';
+            hasilKurang2.textContent = '0';
+            detailKurang2.textContent = '—';
+            totalAwal.textContent = '0';
+            totalAkhir.textContent = 'Rp 0';
+        });
+    </script>
+</body>
+</html>
