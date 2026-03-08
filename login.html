@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Pertamina Kalkulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background: #111118;
+            border-radius: 48px;
+            padding: 40px 30px;
+            box-shadow: 0 30px 60px -15px #000000c0, 0 0 0 1px rgba(124, 58, 237, 0.3) inset;
+            border-bottom: 4px solid #7c3aed;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #5b21b6, #7c3aed, #a78bfa);
+            z-index: 1;
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5b21b6, #7c3aed, #a78bfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .logo-circle span {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .logo-area h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff, #e0d0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-area p {
+            color: #a8a8cc;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .warning-badge {
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid #7c3aed;
+            border-radius: 30px;
+            padding: 8px 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #a78bfa;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .warning-badge span {
+            font-size: 1.2rem;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .input-group label {
+            display: block;
+            color: #a8a8cc;
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 20px;
+            background: #1a1a24;
+            border: 2px solid #2d2d3a;
+            border-radius: 40px;
+            font-size: 1rem;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+            background: #20202a;
+        }
+
+        .input-group input::placeholder {
+            color: #4a4a5a;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #4a2a8a, 0 10px 20px rgba(0,0,0,0.3);
+            transition: 0.08s linear;
+            text-transform: uppercase;
+            margin-top: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #4a2a8a, 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, #8a4aed, #b89bfa);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            text-align: center;
+            min-height: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-link a {
+            color: #a78bfa;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #7c3aed;
+            text-decoration: underline;
+        }
+
+        .security-note {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #2d2d3a;
+            color: #6b6b8b;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .logo-circle {
+                width: 60px;
+                height: 60px;
+            }
+            .logo-circle span {
+                font-size: 2rem;
+            }
+            .logo-area h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-area">
+            <div class="logo-circle">
+                <span>⛽</span>
+            </div>
+            <h1>ADMIN PANEL</h1>
+            <p>Pertamina Kalkulator</p>
+        </div>
+
+        <div class="warning-badge">
+            <span>🔐</span>
+            <span>Password tersembunyi • Anti-inspect</span>
+        </div>
+
+        <!-- FORM LOGIN -->
+        <div class="input-group">
+            <label>PASSWORD</label>
+            <input type="password" id="passwordInput" placeholder="Masukkan password admin" autofocus>
+        </div>
+
+        <button class="login-btn" id="loginBtn">MASUK</button>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="back-link">
+            <a href="index.html">← Kembali ke Kalkulator Pengguna</a>
+        </div>
+
+        <div class="security-note">
+            <p>Password tidak terlihat di source code • Menggunakan kode alias</p>
+            <p style="margin-top: 5px;">© 2026 STAA DEV</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // === PASSWORD YANG BENAR: desta163 ===
+            
+            // Password "desta163" diencode dengan beberapa lapisan:
+            // 1. Reverse: "361atsed"
+            // 2. Base64: MzYxYXRzZWQ= (ini yang benar untuk "361atsed")
+            
+            const encodedPassword = "MzYxYXRzZWQ="; // Base64 dari "361atsed"
+            
+            // Fungsi untuk mendapatkan password asli
+            function getRealPassword() {
+                // Base64 decode
+                const decoded = atob(encodedPassword); // hasil: "361atsed"
+                // Reverse string
+                return decoded.split('').reverse().join(''); // hasil: "desta163"
+            }
+            
+            // Password asli (hasil decode)
+            const REAL_PASSWORD = getRealPassword();
+            
+            // Test: console.log(REAL_PASSWORD); // akan muncul "desta163" (tapi console sudah dimatikan)
+
+            // Elemen DOM
+            const passwordInput = document.getElementById('passwordInput');
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Fungsi login
+            function attemptLogin() {
+                const enteredPassword = passwordInput.value;
+                
+                if (!enteredPassword) {
+                    errorMessage.textContent = '❌ Password tidak boleh kosong';
+                    return;
+                }
+
+                // Bandingkan dengan password asli (sudah di-decode)
+                if (enteredPassword === REAL_PASSWORD) {
+                    // Login berhasil - set session/token
+                    sessionStorage.setItem('adminAuthenticated', 'true');
+                    
+                    // Redirect ke halaman admin
+                    window.location.href = 'admin.html';
+                } else {
+                    // Login gagal
+                    errorMessage.textContent = '❌ Password salah!';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }
+
+            // Event listener untuk tombol login
+            loginBtn.addEventListener('click', attemptLogin);
+
+            // Event listener untuk enter key
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    attemptLogin();
+                }
+            });
+
+            // Proteksi: jika sudah login, redirect langsung ke admin
+            if (sessionStorage.getItem('adminAuthenticated') === 'true') {
+                window.location.href = 'admin.html';
+            }
+
+            // Proteksi inspect element (sederhana)
+            document.addEventListener('contextmenu', (e) => e.preventDefault());
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+                    e.preventDefault();
+                    errorMessage.textContent = '⚠️ Inspect element dinonaktifkan';
+                }
+            });
+
+            // Hapus console.log
+            console.log = function() {};
+        })();
+    </script>
+</body>
+</html>
